@@ -15,6 +15,8 @@ setup(
     ],
     install_requires=[
         'django',
+        'django-snippetscream',
+        'south',
         'vumi',
     ],
     tests_require=[
