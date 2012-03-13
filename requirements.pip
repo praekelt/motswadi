@@ -1,2 +1,2 @@
--e git+git://github.com/praekelt/vumi.git#egg=vumi
+-e git+git://github.com/praekelt/vumi.git@develop#egg=vumi
 -e .
