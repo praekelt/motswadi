@@ -11,7 +11,7 @@ setup(
     url='http://github.com/praekelt/motswadi',
     packages = find_packages(),
     dependency_links = [
-        'https://github.com/praekelt/vumi/tarball/develop#egg=vumi',
+        'https://github.com/praekelt/vumi/zipball/develop#egg=vumi',
     ],
     install_requires=[
         'django',
