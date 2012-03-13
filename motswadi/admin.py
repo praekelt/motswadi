@@ -1,5 +1,6 @@
 from django.contrib import admin
-from motswadi.models import Guardian, NonAttendance, School, Student, Subject, SubjectResult, Test, TestResult
+from motswadi.models import Guardian, NonAttendance, School, Student, \
+        Subject, SubjectResult, Test, TestResult
 
 admin.site.register(Guardian)
 admin.site.register(NonAttendance)
