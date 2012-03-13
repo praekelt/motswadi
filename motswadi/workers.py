@@ -1,7 +1,7 @@
 from vumi.application.base import ApplicationWorker
 
 
-class MotswadiApplication(ApplicationWorker):
+class USSDApplicationWorker(ApplicationWorker):
     """
     Main Motswadi application worker responsible for
     menu navigation and info replies. 
