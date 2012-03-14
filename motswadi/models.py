@@ -26,6 +26,9 @@ class Student(models.Model):
     )
     school = models.ForeignKey('motswadi.School')
 
+    def __unicode__(self):
+        return self.name
+
 
 class Subject(models.Model):
     title = models.CharField(
