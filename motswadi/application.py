@@ -90,10 +90,6 @@ class StudentMenu(DynamicMenu):
     """
     Menu listing various report options for given student.
     """
-    def get_text(self):
-        student = Student.objects.get(pk=self.session['student_pk'])
-        return "Report choices for %s." % student
-
     options = [
         ('Attendance.', {}, 'AttendanceMenu'),
         ('Subject marks.', {}, 'SubjectMarksMenu'),
@@ -102,6 +98,10 @@ class StudentMenu(DynamicMenu):
         ('Teacher information.', {}, 'TeacherMenu'),
         ('Back', {}, 'WelcomeMenu')
     ]
+    
+    def get_text(self):
+        student = Student.objects.get(pk=self.session['student_pk'])
+        return "Report choices for %s." % student
 
 
 class SubjectMarksMenu(DynamicMenu):
