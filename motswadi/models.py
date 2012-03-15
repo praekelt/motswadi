@@ -57,13 +57,14 @@ class Subject(models.Model):
     def __unicode__(self):
         return self.title
 
+
 class Test(models.Model):
     title = models.CharField(
         max_length=128
     )
     subject = models.ForeignKey('motswadi.Subject')
     date = models.DateField()
-    
+
     def __unicode__(self):
         return "%s - %s - %s" % (self.subject.title, self.date, self.title)
 
@@ -74,7 +75,7 @@ class ResultBase(models.Model):
 
     class Meta:
         abstract = True
-    
+
     def __unicode__(self):
         return "%s - %s%%" % (self.student.name, self.percentage)
 
@@ -82,15 +83,16 @@ class ResultBase(models.Model):
 class TestResult(ResultBase):
     test = models.ForeignKey('motswadi.Test')
 
-    class Meta:    
-        ordering = ['-test__date',]
+    class Meta:
+        ordering = ['-test__date', ]
 
 
 class SubjectResult(ResultBase):
     subject = models.ForeignKey('motswadi.Subject')
-    
+
     def __unicode__(self):
-        return "%s - %s - %s%%" % (self.student.name, self.subject.title, self.percentage)
+        return "%s - %s - %s%%" % (self.student.name, self.subject.title, \
+                self.percentage)
 
 
 class Event(models.Model):
