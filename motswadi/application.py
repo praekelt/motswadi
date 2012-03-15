@@ -4,7 +4,7 @@ from motswadi import settings
 setup_environ(settings)
 
 from motswadi.models import Student, Teacher
-from workers import DynamicMenuApplicationWorker, DynamicMenu
+from worker import DynamicMenuApplicationWorker, DynamicMenu
 
 
 class AttendanceMenu(DynamicMenu):
@@ -131,7 +131,7 @@ class WelcomeMenu(DynamicMenu):
                 for idx, student in enumerate(students)]
 
 
-class USSDApplicationWorker(DynamicMenuApplicationWorker):
+class MotswadiApplicationWorker(DynamicMenuApplicationWorker):
     """
     Main Motswadi application worker responsible for
     menu navigation and info replies.
