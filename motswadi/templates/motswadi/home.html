@@ -2,5 +2,13 @@
 
 {% block content %}
 <p>Welcome to Motswadi.</p>
-<a href="{% url django.contrib.auth.views.logout %}?next=/">Log Out</a>
+
+<ul>
+    <li><a href="#">Add Test Result</a></li>
+    <li><a href="#">Change Test Result</a></li>
+    <li><a href="#">Add Student</a></li>
+    <li><a href="#">Update Student</a></li>
+    <li><a href="{% url django.contrib.auth.views.logout %}?next=/">Log Out</a></li>
+</ul>
+
 {% endblock %}
