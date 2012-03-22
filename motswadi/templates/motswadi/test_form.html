@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>Complete the form below to add a test.</p>
+
+{% if form.errors %}
+<p>You did not complete the form correctly. Please try again.</p>
+{% endif %}
+
+<form method="post" action="{% url create_test %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add" />
+    <a href="/"><input type="button" name="cancel" value="Cancel" /></a>
+</form>
+
+{% endblock %}
