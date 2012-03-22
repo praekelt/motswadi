@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>Welcome to Motswadi.</p>
+<a href="{% url django.contrib.auth.views.logout %}?next=/">Log Out</a>
+{% endblock %}
