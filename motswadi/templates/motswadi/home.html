@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>Welcome to Motswadi.</p>
-
+<h2 class="underline">Welcome {{ request.user }}</h2>
+{% for message in messages %}
+    <p><a>{{ message }}</a></p>
+{% endfor %}
+<p>Continue by selecting one of the navigation options below.</p>
+{% comment %}
 <ul>
     <li><a href="{% url create_test %}">Add Test</a></li>
     <li><a href="{% url create_test_result %}">Add Test Result</a></li>
@@ -11,5 +15,6 @@
     <li><a href="#">Update Student</a></li>
     <li><a href="{% url django.contrib.auth.views.logout %}?next=/">Log Out</a></li>
 </ul>
+{% endcomment %}
 
 {% endblock %}
