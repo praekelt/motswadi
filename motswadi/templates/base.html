@@ -1,2 +1,36 @@
-{% block content %}
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+    <meta name="keywords" content="motswadi, teacher, education, parent, student, mobile" />
+    <title>Motswadi | Teacher Portal</title>
+    <link href="/static/motswadi/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h2><a href="{% url home %}">Motswadi Teacher Portal</a></h2>
+        </div>
+        <div class="clear"></div>
+    </header>    
+    <div class="content">
+        <article>
+            {% block content %}
+            {% endblock %}
+        </article>
+    </div>
+    <footer>
+        {% block footer_nav %}
+            <nav class="vertical menu">
+                <ul>
+                    <li><a href="{% url roll_call %}">Roll Call</a></li>
+                    <li><a href="{% url django.contrib.auth.views.logout %}?next=/">Log Out</a></li>
+                </ul>
+            </nav>
+        {% endblock %}
+        <p class="copy">&copy; {% now "Y" %} <a href="http://www.praekeltfoundation.org" title="Praekelt Foundation">Praekelt Foundation</a> | Design By <a href="http://www.mobifreaks.com" title="Design By Mobifreaks">Mobifreaks</a></p>
+    </footer>
+</body>
+</html>
+
