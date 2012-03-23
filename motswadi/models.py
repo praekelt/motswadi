@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Guardian(models.Model):
     name = models.CharField(
@@ -27,16 +27,8 @@ class School(models.Model):
         return self.name
 
 
-class Teacher(models.Model):
-    name = models.CharField(
-        max_length=128
-    )
-    students = models.ManyToManyField('motswadi.Student')
-    subject = models.ForeignKey('motswadi.Subject')
+class Teacher(User):
     contact_number = models.CharField(max_length=16)
-
-    def __unicode__(self):
-        return "%s - %s" % (self.name, self.subject.title)
 
 
 class Student(models.Model):
@@ -44,6 +36,10 @@ class Student(models.Model):
         max_length=128
     )
     school = models.ForeignKey('motswadi.School')
+    class_teacher = models.ForeignKey(
+        'motswadi.Teacher',
+        help_text="Class/guardian teacher."
+    )
 
     def __unicode__(self):
         return self.name
