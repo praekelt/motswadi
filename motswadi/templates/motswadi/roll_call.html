@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="underline">Roll Call {% now "D j F" %}</h2>
+<p>Complete today's roll call by selecting those students that are absent.</p>
+
+
+{% for error in form.non_field_errors %}
+    <p><a>{{ error }}</a></p>
+{% endfor %}
+
+<form method="post" action="{% url roll_call %}">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div>
+            {% for error in field.errors %}
+                <label><a>{{ error }}</a></label><br />
+            {% endfor %}
+            {{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Save" />
+</form>
+
+{% endblock %}
