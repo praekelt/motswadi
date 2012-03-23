@@ -1,17 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>Welcome to Motswadi. Please log in to proceed.</p>
+<h2 class="underline">Welcome to Motswadi</h2>
+<p>Please log in to proceed.</p>
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+{% for error in form.non_field_errors %}
+    <p><a>{{ error }}</a></p>
+{% endfor %}
 
-<form method="post" action="{% url django.contrib.auth.views.login %}">
+<form class="label-top" method="post" action="{% url django.contrib.auth.views.login %}">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Log in" />
+    {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {% for error in field.errors %}
+                <label><a>{{ error }}</a></label>
+            {% endfor %}
+            {{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Log In" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
+{% endblock %}
+
+{% block footer_nav %}
 {% endblock %}
