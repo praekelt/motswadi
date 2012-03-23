@@ -1,4 +1,8 @@
 # Django settings for Motswadi project.
+import os
+import sys
+
+PATH = os.path.split(os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]))))[0]
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -56,7 +60,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(PATH, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -84,6 +88,16 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'n@$yks0i24q-hhvp)q_$#wp9x!zoi%+=so7+=xs(a_rl@jw8a1'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages"
+)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
