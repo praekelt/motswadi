@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Guardian(models.Model):
     name = models.CharField(
         max_length=128
@@ -10,12 +11,34 @@ class Guardian(models.Model):
 
 
 class NonAttendance(models.Model):
-    # TODO: Make date and student unique.
     date = models.DateField()
     student = models.ForeignKey('motswadi.Student')
 
+    class Meta:
+        unique_together = ("date", "student",)
+
     def __unicode__(self):
         return "%s - %s" % (self.student.name, self.date)
+
+
+class Teacher(User):
+    school = models.ForeignKey('motswadi.School')
+    contact_number = models.CharField(max_length=16)
+
+    def __unicode__(self):
+        return "%s %s (%s)" % (self.first_name, self.last_name, self.username)
+
+
+class AssessmentResult(models.Model):
+    title = models.CharField(
+        max_length=128
+    )
+    subject = models.ForeignKey('motswadi.Subject')
+    student = models.ForeignKey('motswadi.Student')
+    percentage = models.IntegerField()
+
+    class Meta:
+        unique_together = ("title", "subject", "student",)
 
 
 class School(models.Model):
@@ -27,22 +50,20 @@ class School(models.Model):
         return self.name
 
 
-class Teacher(User):
-    contact_number = models.CharField(max_length=16)
-
-
 class Student(models.Model):
-    name = models.CharField(
+    full_name = models.CharField(
         max_length=128
     )
     school = models.ForeignKey('motswadi.School')
+    grade = models.IntegerField()
     class_teacher = models.ForeignKey(
         'motswadi.Teacher',
         help_text="Class/guardian teacher."
     )
 
     def __unicode__(self):
-        return self.name
+        return "%s, Gr %s (%s %s)" % (self.full_name, self.grade, \
+                self.class_teacher.first_name, self.class_teacher.last_name)
 
 
 class Subject(models.Model):
@@ -52,43 +73,6 @@ class Subject(models.Model):
 
     def __unicode__(self):
         return self.title
-
-
-class Test(models.Model):
-    title = models.CharField(
-        max_length=128
-    )
-    subject = models.ForeignKey('motswadi.Subject')
-    date = models.DateField()
-
-    def __unicode__(self):
-        return "%s - %s - %s" % (self.subject.title, self.date, self.title)
-
-
-class ResultBase(models.Model):
-    student = models.ForeignKey('motswadi.Student')
-    percentage = models.IntegerField()
-
-    class Meta:
-        abstract = True
-
-    def __unicode__(self):
-        return "%s - %s%%" % (self.student.name, self.percentage)
-
-
-class TestResult(ResultBase):
-    test = models.ForeignKey('motswadi.Test')
-
-    class Meta:
-        ordering = ['-test__date', ]
-
-
-class SubjectResult(ResultBase):
-    subject = models.ForeignKey('motswadi.Subject')
-
-    def __unicode__(self):
-        return "%s - %s - %s%%" % (self.student.name, self.subject.title, \
-                self.percentage)
 
 
 class Event(models.Model):
