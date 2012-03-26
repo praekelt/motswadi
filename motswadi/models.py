@@ -30,10 +30,11 @@ class Event(models.Model):
     date = models.DateField()
     time = models.TimeField()
     students = models.ManyToManyField('motswadi.Student')
+    school = models.ForeignKey('motswadi.School')
 
     class Meta:
         ordering = ('date', 'time', 'title',)
-        unique_together = ("title", "date",)
+        unique_together = ("title", "school",)
 
     def __unicode__(self):
         return "%s %s - %s" % (self.date, self.time, self.title)
