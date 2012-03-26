@@ -85,8 +85,7 @@ class Student(models.Model):
         ordering = ('grade', 'full_name', )
 
     def __unicode__(self):
-        return "%s, Gr %s (%s %s)" % (self.full_name, self.grade, \
-                self.class_teacher.first_name, self.class_teacher.last_name)
+        return "%s (Gr%s)" % (self.full_name, self.grade)
 
 
 class Subject(models.Model):
@@ -103,4 +102,4 @@ class Teacher(User):
     contact_number = models.CharField(max_length=16)
 
     def __unicode__(self):
-        return "%s %s (%s)" % (self.first_name, self.last_name, self.username)
+        return "%s %s" % (self.first_name, self.last_name)
