@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="underline">Update Assessment Result</h2>
+<p>Complete the form below to update this assessment result.</p>
+
+
+{% for error in form.non_field_errors %}
+    <p><a>{{ error|safe }}</a></p>
+{% endfor %}
+
+<form class="label-top" method="post" action="">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {% for error in field.errors %}
+                <label><a>{{ error }}</a></label><br />
+            {% endfor %}
+            {{ field }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Save" />
+</form>
+
+{% endblock %}
