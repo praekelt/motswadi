@@ -1,5 +1,45 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+
+
+class AssessmentResult(models.Model):
+    title = models.CharField(
+        max_length=128
+    )
+    subject = models.ForeignKey('motswadi.Subject')
+    student = models.ForeignKey('motswadi.Student')
+    percentage = models.IntegerField()
+
+    class Meta:
+        ordering = ('subject__title', 'title', 'student__full_name',)
+        unique_together = ("title", "subject", "student",)
+
+    def __unicode__(self):
+        return "%s: %s - %s" % (self.subject.title, self.title, \
+                self.student.full_name)
+
+    def get_absolute_url(self):
+        return reverse("update_assessment_result", kwargs={'pk': self.pk})
+
+
+class Event(models.Model):
+    title = models.CharField(
+        max_length=128
+    )
+    date = models.DateField()
+    time = models.TimeField()
+    students = models.ManyToManyField('motswadi.Student')
+
+    class Meta:
+        ordering = ('date', 'time', 'title',)
+        unique_together = ("title", "date",)
+
+    def __unicode__(self):
+        return "%s %s - %s" % (self.date, self.time, self.title)
+
+    def get_absolute_url(self):
+        return reverse("update_event", kwargs={'pk': self.pk})
 
 
 class Guardian(models.Model):
@@ -19,26 +59,6 @@ class NonAttendance(models.Model):
 
     def __unicode__(self):
         return "%s - %s" % (self.student.name, self.date)
-
-
-class Teacher(User):
-    school = models.ForeignKey('motswadi.School')
-    contact_number = models.CharField(max_length=16)
-
-    def __unicode__(self):
-        return "%s %s (%s)" % (self.first_name, self.last_name, self.username)
-
-
-class AssessmentResult(models.Model):
-    title = models.CharField(
-        max_length=128
-    )
-    subject = models.ForeignKey('motswadi.Subject')
-    student = models.ForeignKey('motswadi.Student')
-    percentage = models.IntegerField()
-
-    class Meta:
-        unique_together = ("title", "subject", "student",)
 
 
 class School(models.Model):
@@ -61,6 +81,9 @@ class Student(models.Model):
         help_text="Class/guardian teacher."
     )
 
+    class Meta:
+        ordering = ('grade', 'full_name', )
+
     def __unicode__(self):
         return "%s, Gr %s (%s %s)" % (self.full_name, self.grade, \
                 self.class_teacher.first_name, self.class_teacher.last_name)
@@ -75,12 +98,9 @@ class Subject(models.Model):
         return self.title
 
 
-class Event(models.Model):
-    title = models.CharField(
-        max_length=128
-    )
-    date = models.DateField()
-    students = models.ManyToManyField('motswadi.Student')
+class Teacher(User):
+    school = models.ForeignKey('motswadi.School')
+    contact_number = models.CharField(max_length=16)
 
     def __unicode__(self):
-        return "%s - %s" % (self.title, self.date)
+        return "%s %s (%s)" % (self.first_name, self.last_name, self.username)
