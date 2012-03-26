@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="underline">Existing Upcoming Events</h2>
+<p>Select an event to update from below.</p>
+
+<ul>
+{% for object in object_list %}
+    <li><a href="{{object.get_absolute_url }}">{{ object }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
