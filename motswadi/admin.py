@@ -1,9 +1,15 @@
 from django.contrib import admin
-from motswadi.models import AssessmentResult, School, Student, Subject, Teacher
+from motswadi.models import AssessmentResult, Event, School, Student, \
+        Subject, Teacher
 
 
 class AssessmentAdmin(admin.ModelAdmin):
     list_display = ('title', 'subject', 'student', 'percentage')
+
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date', 'time',)
+    list_filter = ('date',)
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -15,7 +21,9 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'school',)
     list_filter = ('school',)
 
+
 admin.site.register(AssessmentResult, AssessmentAdmin)
+admin.site.register(Event, EventAdmin)
 admin.site.register(School)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Subject)
