@@ -1,5 +1,5 @@
 from django import forms
-from motswadi.models import Student, Test
+from motswadi.models import Student
 from motswadi.widgets import CustomCheckboxSelectMultiple
 
 
@@ -14,12 +14,3 @@ class RollCallForm(forms.Form):
         super(RollCallForm, self).__init__(*args, **kwargs)
         self.fields['students'].queryset = self.fields['students'].\
                 queryset.filter(class_teacher=teacher)
-
-
-class TestForm(forms.ModelForm):
-    class Meta:
-        model = Test
-
-    def __init__(self, user, *args, **kwargs):
-        super(TestForm, self).__init__(*args, **kwargs)
-        self.fields['subject'].queryset = user.subjects.all()
