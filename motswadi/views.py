@@ -6,19 +6,32 @@ from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, FormView, ListView, UpdateView
 from motswadi.models import AssessmentResult, Event, NonAttendance, Teacher
-from motswadi.forms import EventForm, RollCallForm
+from motswadi.forms import AssessmentResultForm, EventForm, RollCallForm
 
 PAGINATE_BY = 10
 
 
-class CreateAssessmentResultView(CreateView):
-    model = AssessmentResult
-    success_url = '/'
-
+class BaseView(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(CreateAssessmentResultView, self).\
+        self.teacher = Teacher.objects.get(pk=request.user.pk)
+        return super(BaseView, self).\
                 dispatch(request, *args, **kwargs)
+
+
+class BaseFormView(object):
+    def get_form_kwargs(self):
+        kwargs = super(BaseFormView, self).get_form_kwargs()
+        kwargs.update({
+            'teacher': self.teacher
+        })
+        return kwargs
+
+
+class CreateAssessmentResultView(BaseView, BaseFormView, CreateView):
+    form_class = AssessmentResultForm
+    template_name = 'motswadi/assessmentresult_form.html'
+    success_url = '/'
 
     def form_valid(self, form):
         messages.success(self.request, 'Thank you. Assessment result created.')
@@ -39,15 +52,10 @@ class CreateAssessmentResultView(CreateView):
         return super(CreateAssessmentResultView, self).form_invalid(form)
 
 
-class CreateEventView(CreateView):
+class CreateEventView(BaseView, BaseFormView, CreateView):
     model = Event
     success_url = '/'
     form_class = EventForm
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CreateEventView, self).\
-                dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(self.request, 'Thank you. Event created.')
@@ -66,16 +74,14 @@ class CreateEventView(CreateView):
                         reverse("update_event", kwargs={'pk': pk}))
         return super(CreateEventView, self).form_invalid(form)
 
+    def get_initial(self):
+        return {'school': self.teacher.school.pk}
 
-class RollCallView(FormView):
+
+class RollCallView(BaseView, BaseFormView, FormView):
     form_class = RollCallForm
     template_name = 'motswadi/roll_call.html'
     success_url = '/'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        self.teacher = Teacher.objects.get(pk=request.user.pk)
-        return super(RollCallView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         NonAttendance.objects.filter(date=date.today(), \
@@ -86,64 +92,41 @@ class RollCallView(FormView):
         messages.success(self.request, 'Thank you. Roll call completed.')
         return super(RollCallView, self).form_valid(form)
 
-    def get_form_kwargs(self):
-        kwargs = super(RollCallView, self).get_form_kwargs()
-        kwargs.update({
-            'teacher': self.teacher
-        })
-        return kwargs
-
     def get_initial(self):
         return {'students': [obj.student for obj in \
                 NonAttendance.objects.filter(date=date.today())]}
 
 
-class UpdateAssessmentResultView(UpdateView):
+class UpdateAssessmentResultView(BaseView, BaseFormView, UpdateView):
+    form_class = AssessmentResultForm
     model = AssessmentResult
     template_name = 'motswadi/assessmentresult_update_form.html'
     success_url = '/'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(UpdateAssessmentResultView, self).\
-                dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(self.request, 'Thank you. Assessment result updated.')
         return super(UpdateAssessmentResultView, self).form_valid(form)
 
 
-class UpdateAssessmentResultsView(ListView):
+class UpdateAssessmentResultsView(BaseView, ListView):
     model = AssessmentResult
     paginate_by = PAGINATE_BY
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(UpdateAssessmentResultsView, self).\
-                dispatch(request, *args, **kwargs)
 
-
-class UpdateEventView(UpdateView):
+class UpdateEventView(BaseView, BaseFormView, UpdateView):
     model = Event
     template_name = 'motswadi/event_update_form.html'
     success_url = '/'
     form_class = EventForm
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(UpdateEventView, self).\
-                dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(self.request, 'Thank you. Event updated.')
         return super(UpdateEventView, self).form_valid(form)
 
 
-class UpdateEventsView(ListView):
+class UpdateEventsView(BaseView, ListView):
     model = Event
     paginate_by = PAGINATE_BY
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(UpdateEventsView, self).\
-                dispatch(request, *args, **kwargs)
+    def get_queryset(self):
+        return Event.objects.filter(school=self.teacher.school)
