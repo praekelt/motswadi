@@ -9,7 +9,7 @@
     <p><a>{{ error|safe }}</a></p>
 {% endfor %}
 
-<form class="label-top" method="post" action="{% url create_assessment_result %}">
+<form class="label-top" method="post" action="">
     {% csrf_token %}
 
     {% for field in form %}
