@@ -18,6 +18,20 @@
         <article>
             {% block content %}
             {% endblock %}
+            
+            {% if is_paginated %}
+                Page: 
+                {% for page in paginator.page_range %}
+                    {% if page_obj.number == page %}
+                        {{ page }}
+                    {% else %}
+                        <a href="?page={{ page }}">{{ page }}</a>
+                    {% endif %}
+                    {% if not forloop.last %}
+                        | 
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </article>
     </div>
     <footer>
@@ -26,6 +40,9 @@
                 <ul>
                     <li><a href="{% url roll_call %}">Roll Call</a></li>
                     <li><a href="{% url create_assessment_result %}">Create Assessment Result</a></li>
+                    <li><a href="{% url update_assessment_results %}">Update Assessment Results</a></li>
+                    <li><a href="{% url create_event %}">Create Event</a></li>
+                    <li><a href="{% url update_events %}">Update Events</a></li>
                     <li><a href="{% url django.contrib.auth.views.logout %}?next=/">Log Out</a></li>
                 </ul>
             </nav>
