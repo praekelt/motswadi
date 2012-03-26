@@ -1,6 +1,16 @@
 from django import forms
-from motswadi.models import Student
+from django.forms.extras import SelectDateWidget
+from motswadi.models import Event, Student
 from motswadi.widgets import CustomCheckboxSelectMultiple
+
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+        self.fields['date'].widget = SelectDateWidget()
 
 
 class RollCallForm(forms.Form):
