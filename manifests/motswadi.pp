@@ -99,9 +99,9 @@ file { "/etc/nginx/sites-enabled/motswadi.conf":
 #}
 
 # Manage supervisord symlinks.
-#file { "/etc/supervisor/conf.d/sentry.conf":
+#file { "/etc/supervisor/conf.d/motswadi.conf":
 #    ensure => symlink,
-#    target => "/var/praekelt/sentry/supervisord/sentry.conf",
+#    target => "/var/praekelt/motswadi/supervisord/motswadi.conf",
 #    subscribe => [
 #        Exec['update_repo'],
 #        Package['supervisor']
