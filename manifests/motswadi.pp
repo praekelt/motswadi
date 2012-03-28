@@ -14,12 +14,12 @@ exec { "update_apt":
 package { [
     "git-core",
     "libpq-dev",
+    "nginx",
     "postgresql",
     "python-dev",
 #    "python-pip",
     "python-virtualenv",
-#    "supervisor",
-#    "nginx",
+    "supervisor",
     ]:
     ensure => latest,
     subscribe => Exec['update_apt'];
