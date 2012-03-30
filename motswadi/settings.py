@@ -19,7 +19,7 @@ DATABASES = {
         'NAME': 'motswadi',                      # Or path to database file if using sqlite3.
         'USER': 'motswadi',                      # Not used with sqlite3.
         'PASSWORD': 'motswadi',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost.
+        'HOST': '127.0.0.1',                      # Set to empty string for localhost.
         'PORT': '',                      # Set to empty string for default.
     }
 }
