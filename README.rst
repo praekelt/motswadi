@@ -46,5 +46,5 @@ Deploy a local Vagrant instance like so::
     (ve)root@lucid32$ /etc/init.d/nginx restart
     (ve)root@lucid32$ supervisorctl reload
 
-Then access the Sentry dashboard on `localhost port 4567 <http://localhost:4567/1/>`_.
+Then access the Motswadi dashboard on `localhost port 4567 <http://localhost:4567/1/>`_.
 
