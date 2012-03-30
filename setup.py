@@ -16,6 +16,7 @@ setup(
     install_requires=[
         'django',
         'django-snippetscream',
+        'flup',
         'psycopg2',
         'south',
         'vumi',
