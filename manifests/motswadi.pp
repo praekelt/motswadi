@@ -64,7 +64,7 @@ exec { 'create_virtualenv':
     cwd => '/var/praekelt/motswadi',
     unless => 'test -d /var/praekelt/motswadi/ve',
     subscribe => [
-        #Package['libpq-dev'],
+        Package['libpq-dev'],
         Package['python-dev'],
         Package['python-virtualenv'],
         Exec['clone_repo'],
@@ -99,14 +99,14 @@ file { "/etc/nginx/sites-enabled/motswadi.conf":
 #}
 
 # Manage supervisord symlinks.
-#file { "/etc/supervisor/conf.d/motswadi.conf":
-#    ensure => symlink,
-#    target => "/var/praekelt/motswadi/supervisord/motswadi.conf",
-#    subscribe => [
-#        Exec['update_repo'],
-#        Package['supervisor']
-#    ]
-#}
+file { "/etc/supervisor/conf.d/motswadi.fcgi":
+    ensure => symlink,
+    target => "/var/praekelt/motswadi/supervisord/motswadi.fcgi",
+    subscribe => [
+        Exec['update_repo'],
+        Package['supervisor']
+    ]
+}
 
 # Create Postgres role and database.
 postgres::role { "motswadi":
