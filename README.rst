@@ -38,13 +38,15 @@ Deploy a local Vagrant instance like so::
     you@host$ vagrant up
     you@host$ vagrant ssh
     vagrant@lucid32$ sudo -i
-    root@lucid32$ cd /var/praekelt/motswadi
-    root@lucid32$ . ve/bin/activate
-    (ve)root@lucid32$ ./motswadi/manage.py syncdb
-    (ve)root@lucid32$ ./motswadi/manage.py migrate
-    (ve)root@lucid32$ ./motswadi/manage.py collectstatic
-    (ve)root@lucid32$ /etc/init.d/nginx restart
-    (ve)root@lucid32$ supervisorctl reload
+    vagrant@lucid32$ su ubuntu
+    ubuntu@lucid32$ cd /var/praekelt/motswadi
+    ubuntu@lucid32$ . ve/bin/activate
+    (ve)ubuntu@lucid32$ ./motswadi/manage.py syncdb
+    (ve)ubuntu@lucid32$ ./motswadi/manage.py migrate
+    (ve)ubuntu@lucid32$ ./motswadi/manage.py collectstatic
+    (ve)ubuntu@lucid32$ exit
+    root@lucid32$ /etc/init.d/nginx restart
+    root@lucid32$ supervisorctl reload
 
-Then access the Motswadi dashboard on `localhost port 4567 <http://localhost:4567/1/>`_.
+Then access the Motswadi dashboard on `localhost port 4567 <http://localhost:4567>`_.
 
