@@ -26,3 +26,25 @@ Start the Vumi application worker by executing the following command::
     $ twistd -n --pidfile=applicationworker.pid start_worker --worker-class motswadi.application.MotswadiApplicationWorker --set-option=transport_name:xmpp_transport --set-option=worker_name:motswadi_worker
 
 
+Deploying
+=========
+
+Local Vagrant Deploy
+--------------------
+Deploy a local Vagrant instance like so::
+    
+    you@host$ git clone https://github.com/praekelt/motswadi.git
+    you@host$ cd motswadi
+    you@host$ vagrant up
+    you@host$ vagrant ssh
+    vagrant@lucid32$ sudo -i
+    root@lucid32$ cd /var/praekelt/motswadi
+    root@lucid32$ . ve/bin/activate
+    (ve)root@lucid32$ ./motswadi/manage.py syncdb
+    (ve)root@lucid32$ ./motswadi/manage.py migrate
+    (ve)root@lucid32$ ./motswadi/manage.py collectstatic
+    (ve)root@lucid32$ /etc/init.d/nginx restart
+    (ve)root@lucid32$ supervisorctl reload
+
+Then access the Sentry dashboard on `localhost port 4567 <http://localhost:4567/1/>`_.
+
