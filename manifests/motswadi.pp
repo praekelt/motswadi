@@ -91,12 +91,13 @@ file { "/etc/nginx/sites-enabled/motswadi.conf":
     ]
 }
 
-#file { "/etc/nginx/sites-enabled/default":
-#    ensure => absent,
-#    subscribe => [
-#        Package['nginx'],
-#    ]
-#}
+file { "/etc/nginx/sites-enabled/default":
+    ensure => absent,
+    subscribe => [
+        Exec['update_repo'],
+        Package['nginx'],
+    ]
+}
 
 # Manage supervisord symlinks.
 file { "/etc/supervisor/conf.d/motswadi.conf":
@@ -112,11 +113,18 @@ file { "/etc/supervisor/conf.d/motswadi.conf":
 postgres::role { "motswadi":
     password => motswadi,
     ensure => present,
-    subscribe => Package["postgresql"],
+    subscribe => [
+        Exec['update_repo'],
+        Package['postgresql']
+    ]
 }
 
 postgres::database { "motswadi":
     owner => motswadi,
     ensure => present,
     template => "template0",
+    subscribe => [
+        Exec['update_repo'],
+        Package['postgresql']
+    ]
 }
