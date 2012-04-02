@@ -2,8 +2,8 @@ from datetime import date, timedelta
 
 # Initialize Django ENV.
 from django.core.management import setup_environ
-from motswadi import settings_dev
-setup_environ(settings_dev)
+from motswadi import settings
+setup_environ(settings)
 
 from motswadi.models import Student, Subject
 from worker import DynamicMenuApplicationWorker, DynamicMenu
