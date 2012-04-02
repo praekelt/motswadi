@@ -19,12 +19,11 @@ Starting Vumi App
 
 Start the Vumi transport worker manually by executing the following command::
 
-    $ twistd -n --pidfile=transportworker.pid start_worker --worker-class vumi.transports.xmpp.XMPPTransport --config=./transport.yaml
+    $ twistd -n --pidfile=transportworker.pid start_worker --worker-class=vumi.transports.xmpp.XMPPTransport --config=./motswadi/transport.yaml
 
 Start the Vumi application worker by executing the following command::
 
-    $ twistd -n --pidfile=applicationworker.pid start_worker --worker-class motswadi.application.MotswadiApplicationWorker --set-option=transport_name:xmpp_transport --set-option=worker_name:motswadi_worker
-
+    $ twistd -n --pidfile=applicationworker.pid start_worker --worker-class=motswadi.application.MotswadiApplicationWorker --config=./motswadi/worker.yaml
 
 Deploying
 =========
