@@ -7,3 +7,4 @@ coverage.xml
 pep8.txt
 motswadi.sqlite
 /static/
+.vagrant
