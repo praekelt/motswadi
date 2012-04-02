@@ -88,6 +88,10 @@ class Student(models.Model):
     def __unicode__(self):
         return "%s (Gr%s)" % (self.full_name, self.grade)
 
+    def get_subjects(self):
+        results = AssessmentResult.objects.filter(student=self)
+        return list(set([result.subject for result in results]))
+
 
 class Subject(models.Model):
     title = models.CharField(
