@@ -32,13 +32,21 @@ Deploying
 Remote Host Fabric Deploy
 -------------------------
 
-Provisioning
-++++++++++++
+Provision
++++++++++
 To provision a new Motswadi instance on a remote host run the following command using a user with superuser priviliges on the remote host:: 
     
     $ fab -H hostname:port -u user provision
 
 After the provision access Motswadi by hitting the hostname in your browser.
+
+Release
++++++++
+To release new Motswadi code on an existing instance run the following command using a user with superuser priviliges on the remote host:: 
+    
+    $ fab -H hostname:port -u user release
+
+This will pull the latest code from the ``master`` branch and restart the instance.
 
 Restart
 +++++++
