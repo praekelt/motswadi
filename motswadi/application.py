@@ -24,8 +24,8 @@ class AttendanceMenu(DynamicMenu):
                 date=date.today()).count())
         absent_count = student.nonattendance_set.filter(\
                 date__gte=date.today() - timedelta(days=30)).count()
-        return "-Attendance-\n%s is %sat school today.\n%s has been absent '\
-                '%s day%s out of the last 30 days." % \
+        return '-Attendance-\n%s is %sat school today.\n%s has been absent '\
+                '%s day%s out of the last 30 days.' % \
                 (student, "not " if absent_today else "", student, \
                 absent_count, "" if absent_count == 1 else "s")
 
