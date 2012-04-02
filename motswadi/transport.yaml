@@ -1,4 +1,4 @@
-transport_name: xmpp_transport
+transport_name: motswadi_transport
 username: <username>
 password: <password>
 status: Vumi Transport
