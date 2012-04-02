@@ -29,6 +29,25 @@ Start the Vumi application worker by executing the following command::
 Deploying
 =========
 
+Remote Host Fabric Deploy
+-------------------------
+
+Provisioning
+++++++++++++
+To provision a new Motswadi instance on a remote host run the following command using a user with superuser priviliges on the remote host:: 
+    
+    $ fab -H hostname:port -u user provision
+
+After the provision access Motswadi by hitting the hostname in your browser.
+
+Restart
++++++++
+To restart a remote Motswadi instance previously provisioned run the following command using a user with superuser priviliges on the remote host:: 
+    
+    $ fab -H hostname:port -u user restart
+
+This will restart `Nginx <http://wiki.nginx.org/Main>`_ and reload `Supervisor <http://supervisord.org/>`_, thus restarting Motswadi.
+
 Local Vagrant Deploy
 --------------------
 Deploy a local Vagrant instance like so::
