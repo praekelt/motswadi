@@ -13,8 +13,17 @@ def provision():
         sudo('puppet ./manifests/motswadi.pp --modulepath ./manifests/modules')
     with cd('/var/praekelt/motswadi'):
         with prefix('. ve/bin/activate'):
-            sudo('./motswadi/manage.py syncdb')
-            sudo('./motswadi/manage.py migrate')
-            sudo('./motswadi/manage.py collectstatic')
+            sudo('./motswadi/manage.py syncdb', user="ubuntu")
+            sudo('./motswadi/manage.py migrate', user="ubuntu")
+            sudo('./motswadi/manage.py collectstatic', user="ubuntu")
     restart()
     run('rm -rf ~/motswadi')
+
+def release():
+    with cd('/var/praekelt/motswadi'):
+        sudo('git pull origin master', user='ubuntu')
+        with prefix('. ve/bin/activate'):
+            sudo('./motswadi/manage.py syncdb', user="ubuntu")
+            sudo('./motswadi/manage.py migrate', user="ubuntu")
+            sudo('./motswadi/manage.py collectstatic', user="ubuntu")
+    restart()
