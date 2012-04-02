@@ -1,5 +1,6 @@
 import redis
 import sys
+
 from twisted.internet.defer import inlineCallbacks
 from vumi.application import ApplicationWorker, SessionManager
 
@@ -8,7 +9,9 @@ def class_from_str(str):
     """
     Returns a class for given string.
     """
-    return getattr(sys.modules[__name__], str)
+    module = '.'.join(str.split('.')[:-1])
+    cls = str.split('.')[-1]
+    return getattr(sys.modules[module], cls)
 
 
 class DynamicMenu(object):
@@ -16,6 +19,9 @@ class DynamicMenu(object):
     Base class from which all dynamic menus should inherit.
     Provides logic for constructing menus and proceeding to subsequent menus.
     """
+    text = None
+    options = []
+
     def get_text(self):
         """
         By default menu text (header) is defined in self.text.
@@ -30,6 +36,12 @@ class DynamicMenu(object):
         """
         return self.options
 
+    def process_response(self, choice):
+        """
+        Override to perform any additional menu specific processing.
+        """
+        pass
+
     def generate_menu(self, choice):
         """
         Generates menu based on determined text and options.
@@ -38,19 +50,21 @@ class DynamicMenu(object):
         return self.response_menu.get_text() + '\n' + '\n'.join(
             ['%s. %s' % (idx, opt[0]) for idx, opt in enumerate(options, 1)])
 
-    def __init__(self, session, choice=None):
+    def __init__(self, message, session, choice=None):
         """
         Initiate menu based on incomming choice from previous menu.
         Options specific session data for given choice is
         added to session data.
         """
+        self.message = message
         self.session = session
         if choice:
             options = self.get_options()
             resolved_choice = options[int(choice) - 1]
             session.update(resolved_choice[1])
             session['class'] = resolved_choice[2]
-            self.response_menu = class_from_str(resolved_choice[2])(session)
+            self.process_response(choice)
+            self.response_menu = class_from_str(resolved_choice[2])(message, session)
         else:
             self.response_menu = self
 
@@ -68,6 +82,7 @@ class DynamicMenuApplicationWorker(ApplicationWorker):
             prefix="%(worker_name)s:%(transport_name)s" % self.config,
             max_session_length=getattr(self, 'MAX_SESSION_LENGTH', None)
         )
+        self.redis_server.flushdb()
         yield super(DynamicMenuApplicationWorker, self).startWorker()
 
     @inlineCallbacks
@@ -91,15 +106,14 @@ class DynamicMenuApplicationWorker(ApplicationWorker):
                 menu_class = self.initial_menu
             else:
                 if 'class' in session:
-                    menu_class = getattr(sys.modules[__name__], \
-                            session['class'])
+                    menu_class = class_from_str(session['class'])
                 else:
                     menu_class = self.initial_menu
 
             try:
-                menu = menu_class(session, int(message['content']))
+                menu = menu_class(message, session, int(message['content']))
             except ValueError:
-                menu = menu_class(session, '')
+                menu = menu_class(message, session, '')
 
             self.session_manager.save_session(user_id, session)
             self.reply_to(message, menu.generate_menu(message['content']))
