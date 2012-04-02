@@ -1,0 +1,7 @@
+transport_name: xmpp_transport
+username: <username>
+password: <password>
+status: Vumi Transport
+host: talk.google.com
+port: 5222
+debug: False
